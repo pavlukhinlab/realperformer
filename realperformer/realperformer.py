@@ -62,7 +62,7 @@ class FastAttention(nn.Module):
             k = create_kernel(k, is_query=False)
 
         attn_fn = linear_attention if not self.causal else self.causal_linear_fn
-        out = attn_fn(q, k, v, prev)
+        out, prev = attn_fn(q, k, v, prev)
         return out, prev
 
 # classes
@@ -110,7 +110,7 @@ class Chunk(nn.Module):
 
     def forward(self, x, local_prev=None, fast_prev=None, **kwargs):
         if self.chunks == 1:
-            return self.fn(x, **kwargs)
+            return self.fn(x, **kwargs), local_prev, fast_prev
         chunks = x.chunk(self.chunks, dim=self.dim)
         return torch.cat([self.fn(c, **kwargs) for c in chunks], dim=self.dim), local_prev, fast_prev
 

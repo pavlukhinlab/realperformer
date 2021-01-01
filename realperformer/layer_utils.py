@@ -2,7 +2,7 @@ import math
 import torch
 import torch.nn.functional as F
 from torch import nn
-from torch.cuda.amp import autocast
+#from torch.cuda.amp import autocast
 from einops import rearrange, repeat
 
 from functools import partial
